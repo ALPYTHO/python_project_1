@@ -40,55 +40,104 @@ def traiter_la_ligne_de_commande():
 
 
 def afficher_le_plateau_de_jeu(état):
-    """Afficher le plateau
+  board = """
+       . | . : | : : | : : | : . | .
+         |   . | .   |   . | .   |
+  ...    |     |     |     |     |      .
+1 ───────┼─────┼─────┼─────┼─────┼───────
+  ...    |     |     |     |     |      .
+  .      |     |     |     |     |    ...
+2 ───────┼─────┼─────|─────┼─────┼───────
+  .      |     |     |     |     |    ...
+  ..     |     |     |     |     |     ..
+3 ───────┼─────┼─────┼─────┼─────┼───────
+  ..     |     |     |     |     |     ..
+  .      |     |     |     |     |    ...
+4 ───────┼─────┼─────┼─────┼─────┼───────
+  .      |     |     |     |     |    ...
+  ...    |     |     |     |     |      .
+5 ───────┼─────┼─────┼─────┼─────┼───────
+  ...    |     |     |     |     |      .
+       . | .   |     |     |   . | .
+       : | : . | . : | : . | . : | :"""
+                
 
-    Ne faites preuve d'aucune originalité dans votre «art ascii»,
-    car votre fonction sera testée par un programme et celui-ci est
-    de nature intolérante (votre affichage doit être identique à
-    celui illustré). Notez aussi que votre fonction sera testée
-    avec plusieurs états de jeu différents.
+  #pour réduire le nombre de code on remplace ici
 
-    Args:
-        état (dict): Dictionnaire représentant l'état du jeu.
 
-    Examples:
-        >>> état = [
-                {
-                    "nom": "jowic42",
-                    "pions": [0, 2, 6, 9, 12]
-                },
-                {
-                    "nom": "robot",
-                    "pions": [0, 9, 2, 6, 12]
-                }
-            ]
-        >>> afficher_plateau_ascii(état)
-            Légende:
-              □ = jowic42
-              ■ = robot
+  current_board = board
 
-                   . | . : | : : | : : | : . | .     
-                     █   . | .   |   . | .   ●       
-              ...    ●     |     |     |     █      .
-            1 ──□□ ○─┼─────┼─────┼─────┼─────┼───────
-              ...    |     |     |     |     |      .
-              .      |     |     |     |     |    ...
-            2 ───────┼────□□ ○───█─────┼─────┼───────
-              .      |     |     ●     |     |    ...
-              ..     |     ●     |     |     |     ..
-            3 ───────┼─────█─────┼─────┼─────┼─○ □□──
-              ..     |     |     |     |     |     ..
-              .      |     |     |     |     |    ...
-            4 ───────┼─────┼───○ □□────┼─────┼───────
-              .      |     |     |     |     |    ...
-              ...    |     |     |     |     |      .
-            5 ──○ □□─┼─────┼─────┼─────┼─────┼───────
-              ...    |     |     |     ●     |      .
-                   . | .   |     |     █   . | .
-                   : | : . | . : | : . | . : | :
-    """
-    # TODO: Complétez cette fonction, retirer le TODO une fois complété.
-    pass
+  #pour réutiliser du code
+
+  def change_char_verti(current_board, c, d, b):
+
+      current_board = current_board[:b + d] + "█" + current_board[b + d + 1:]
+      current_board = current_board[:b + c] + "●" + current_board[b + c + 1:]
+
+      return current_board
+
+  def change_char_hory(current_board, character, b):  
+      current_board = current_board[:b] + character + current_board[b + 4:]
+
+      return current_board
+
+  for i in range(5):
+
+      character_for_0_6 = {"vertical": {"0": [38, 35, 0], "6": [661, 0, 42], "12": [38, 0, 35]}, "horyzontal": {"0": 5, "6": 36, "12": 5}, "bignum": { "8": 4, "9": 3, "10": 2, "12": 12}}
+      
+      #Joueur vertical pour les cas sauf 0,6,12
+      joueur2 = état[1]["pions"][i]
+      rectangle, rond = 42, 0
+
+      if joueur2 > 6 and joueur2 != 12:
+
+          joueur2 = character_for_0_6["bignum"][str(joueur2)]
+          rectangle, rond = rond, rectangle
+
+      
+      if (joueur2 % 6) != 0:
+
+          b = ((joueur2 - 1) * 42 * 3) + 115 + (i * 6) + 9  
+
+          current_board = change_char_verti(current_board, rectangle, rond, b)
+
+      #Joueur horyzontal pour les cas sauf 0,6,12
+          
+      joueur1 = état[0]["pions"][i]
+      character = "□□ ○"
+
+      if joueur1 > 6:
+
+          joueur1 = character_for_0_6["bignum"][str(joueur1)]
+
+          character = "○ □□"
+
+
+      if (joueur1 % 6) != 0:
+
+          b = (i * 42 * 3) + 114 + 9 + (6 * (joueur1 - 1))
+
+          current_board = change_char_hory(current_board, character, b)
+
+      #Cas 0,6,12 vertical
+      if (joueur2 % 6) == 0:
+
+        b = (character_for_0_6["vertical"][str(joueur2)][0] + 9 + (i * 6))
+        
+        c = character_for_0_6["vertical"][str(joueur2)][1]
+        d = character_for_0_6["vertical"][str(joueur2)][2]
+
+        current_board = change_char_verti(current_board, c, d, b)
+
+      #Cas 0,6,12 horyzontal
+      if (joueur1 % 6) == 0:
+
+        b = (i * 42 * 3) + 114 + character_for_0_6["horyzontal"][str(joueur1)]
+
+        current_board = change_char_hory(current_board, character, b)
+
+  print(f"""Légende:\n  □ = {état[0]["nom"]}\n  ■ = {état[1]["nom"]}\n""", current_board)
+  pass
 
 
 def formatter_les_parties(liste):

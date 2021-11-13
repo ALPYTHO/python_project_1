@@ -15,9 +15,7 @@ Functions:
 """
 import httpx
 
-# TODO: Complétez avec le bon URL, retirer le TODO une fois complété.
-#       Vous pourrez référer cette variable dans vos fonctions.
-URL = "https://"
+URL = "https://pax.ulaval.ca/"
 
 
 def lister_les_parties(iduls):
