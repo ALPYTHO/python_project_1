@@ -1,18 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Module d'API du jeu Squadro
 
-Ce module permet d'interagir avec le serveur
-afin de pouvoir jouer contre un adversaire robotisé.
-
-Attributes:
-    URL (str): Constante représentant le début de l'url du serveur de jeu.
-
-Functions:
-    * récupérer_parties - Récupérer la liste des parties reçus du serveur.
-    * retrouver_partie - Retrouver l'état d'une partie spécifique.
-    * commencer_partie - Créer une nouvelle partie et retourne l'état de cette dernière.
-    * executer_coup - Exécute un coup et retourne le nouvel état de jeu.
-"""
 import httpx
 
 URL = 'https://pax.ulaval.ca/squadro/api2/'
@@ -29,50 +16,23 @@ def lister_les_parties(iduls):
         raise RuntimeError(rep.json())
 
     else:
-        return(rep.json())
+        raise RuntimeError(rep.json())
     
 
 
 def récupérer_une_partie(id_partie):
-    """Retrouver une partie depuis son identifiant.
 
-    Récupère une partie depuis son identifiant en effectuant une requête à l'URL cible
-    squadro/api2/partie/
+    rep = httpx.get(URL + 'partie', params={'id': id_partie})
 
-    Cette requête de type GET s'attend en entrée à recevoir
-    un seul paramètre nommé `id` qui identifie la partie.
-    En cas de succès (code `200`), elle retourne en JSON
-    un dictionnaire contenant les clés suivantes:
+    if rep.status_code == 200:
 
-        id: identifiant de la partie en cours;
-        prochain_joueur: identifiant du prochain joueur à jouer;
-        état: l'état actuel du jeu;
-        gagnant: le nom du joueur gagnant, None s'il n'y a pas encore de gagnant.
+        rep = rep.json()
+        return(rep["id"], rep["prochain_joueur"], rep["état"], rep["gagnant"])
 
-    En cas d'erreur (code `406`), elle retourne en JSON
-    un dictionnaire contenant la clé suivante:
-
-        message: un message en cas d'erreur.
-
-    Args:
-        id_partie (str): Identifiant de la partie à récupérer.
-
-    Returns:
-        tuple: Tuple constitué de l'identifiant de la partie en cours,
-            du prochain joueur à jouer et de l'état courant du jeu,
-            après avoir décodé le JSON de sa réponse.
-
-    Raises:
-        RuntimeError: Erreur levée lorsque le serveur retourne un code 406.
-
-    Examples:
-        >>> id_partie = 'c1493454-1f7f-446f-9c61-bd7a9d66c92d'
-        >>> partie = retrouver_partie(id_partie)
-        >>> print(partie)
-        ('c1493454-1f7f-446f-9c61-bd7a9d66c92d', 'keree13, [{'nom': ..., 'pions': ...}, ..])
-    """
-    # TODO: Complétez cette fonction, retirer le TODO une fois complété.
-    pass
+    if rep.status_code == 406:
+        raise RuntimeError("Erreur levée lorsque le serveur retourne un code 406.")
+    else:
+        raise RuntimeError(rep.json())
 
 
 def créer_une_partie(iduls):
