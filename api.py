@@ -53,5 +53,4 @@ def jouer_un_coup(id_partie, idul, pion):
 
         return(rep["id"], rep["prochain_joueur"], rep["état"], rep["gagnant"])
 
-    else:
-        raise RuntimeError(rep.json()["message"])
+    raise RuntimeError(rep.json()["message"])
