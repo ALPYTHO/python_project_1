@@ -4,7 +4,6 @@
 # Ne PAS ignorer les fichiers Python et autre fichier important
 !/api.py
 !/main.py
-!/test.py
 !/README.md
 !/squadro.py
 !/.gitignore
