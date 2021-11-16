@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-
-from argparse import ArgumentParser
 import argparse
-
-
-
 
 def traiter_la_ligne_de_commande():
 
@@ -17,8 +11,6 @@ def traiter_la_ligne_de_commande():
 
 
 def afficher_le_plateau_de_jeu(état):
-  
-  # tableau vide
   board = """
        . | . : | : : | : : | : . | .
          |   . | .   |   . | .   |
@@ -40,13 +32,8 @@ def afficher_le_plateau_de_jeu(état):
        . | .   |     |     |   . | .
        : | : . | . : | : . | . : | :"""
                 
-
-  
-  #réinitialization du tableau vide
-
   current_board = board
 
- 
   # remplacement des 2 colones lors du changement de pions verticaux c et d utilisé pour inverser
   def change_char_verti(current_board, c, d, b):
 
@@ -61,7 +48,6 @@ def afficher_le_plateau_de_jeu(état):
 
       return current_board
 
-# test pour 5 pions pour vertical et horyzontal en même temps réduisant le nombre de for loop
   for i in range(5):
 
     # dictionaire utilisé pour les valeurs qui ne marche pas avec la logique utilisé plus bas afin de réduire le nombre de for
@@ -131,11 +117,3 @@ def formatter_les_parties(liste):
 
         print(f'{parties} : {liste[parties]["date"]}, {liste[parties]["joueurs"][0]} vs {liste[parties]["joueurs"][1]}, gagnant: {liste[parties]["gagnant"]}')
     pass
-
-    # TODO revoir comment c'est supposé print gagnant   
-
-# TODO: Vous pouvez créer des fonctions additionnels si vous en sentez le besoin,
-#       Il ne devrait pas y avoir autre chose que des définitions de fonctions.
-#       Retirer le TODO une fois complété.
-# TODO: Supprimer le code et les commentaires superflux.
-# TODO: Supprimer les TODOs une fois complété.
