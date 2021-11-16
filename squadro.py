@@ -33,7 +33,7 @@ def afficher_le_plateau_de_jeu(état):
   ...    |     |     |     |     |      .
        . | .   |     |     |   . | .
        : | : . | . : | : . | . : | :"""
-                
+
     current_board = board
     # remplacement des 2 colones lors du changement de pions verticaux c et d utilisé pour inverser
     def change_char_verti(current_board, c, d, b):
@@ -53,11 +53,15 @@ def afficher_le_plateau_de_jeu(état):
 
     for i in range(5):
 
-        # dictionaire utilisé pour les valeurs qui ne marche pas avec la logique utilisé plus bas afin de réduire le nombre de for
+        # dictionaire utilisé pour les valeurs qui ne marche pas avec la logique
+        # utilisé plus bas afin de réduire le nombre de for
         # vertical:position du caractère rectangulaire à remplacer, c, et d
         # (addition nécessaire pour le point incluant s'il y a inversion ou pas)
-        # bignum: chiffre qui causait des problèmes dans la logique plus bas, valeur de colonne 
-        character_for_0_6 = {"vertical": {"0": [38, 35, 0], "6": [661, 0, 42], "12": [38, 0, 35]}, "horyzontal": {"0": 5, "6": 36, "12": 5}, "bignum": { "8": 4, "9": 3, "10": 2, "12": 12}}
+        # bignum: chiffre qui causait des problèmes dans la logique plus bas, valeur de colonne
+        character_for_0_6 = {"vertical": {"0": [38, 35, 0], "6": [661, 0, 42], "12": [38, 0, 35]},
+        "horyzontal": {"0": 5, "6": 36, "12": 5},
+        "bignum": { "8": 4, "9": 3, "10": 2, "12": 12}
+        }
         # Joueur vertical pour les cas sauf 0,6,12
 
         joueur2 = état[1]["pions"][i]
@@ -93,12 +97,12 @@ def afficher_le_plateau_de_jeu(état):
             b = (i * 126) + 123 + (6 * (joueur1 - 1))
 
             current_board = change_char_hory(current_board, character, b)
-
         # Cas 0,6,12 vertical
         if (joueur2 % 6) == 0:
             b = (character_for_0_6["vertical"][str(joueur2)][0] + 9 + (i * 6))
-            
-            current_board = change_char_verti(current_board, character_for_0_6["vertical"][str(joueur2)][1], character_for_0_6["vertical"][str(joueur2)][2], b)
+            current_board = change_char_verti(current_board, character_for_0_6["vertical"][str(joueur2)][1],
+            character_for_0_6["vertical"][str(joueur2)][2], b
+            )
         # Cas 0,6,12 horyzontal
         if (joueur1 % 6) == 0:
             b = (i * 126) + 114 + character_for_0_6["horyzontal"][str(joueur1)]
