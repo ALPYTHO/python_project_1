@@ -100,7 +100,8 @@ def afficher_le_plateau_de_jeu(état):
         # Cas 0,6,12 vertical
         if (joueur2 % 6) == 0:
             b = (character_for_0_6["vertical"][str(joueur2)][0] + 9 + (i * 6))
-            current_board = change_char_verti(current_board, character_for_0_6["vertical"][str(joueur2)][1],
+            current_board = change_char_verti(current_board,
+            character_for_0_6["vertical"][str(joueur2)][1],
             character_for_0_6["vertical"][str(joueur2)][2], b
             )
         # Cas 0,6,12 horyzontal
