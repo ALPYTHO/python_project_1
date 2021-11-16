@@ -15,54 +15,22 @@ Functions:
 """
 import httpx
 
-URL = "https://pax.ulaval.ca/"
+URL = 'https://pax.ulaval.ca/squadro/api2/'
 
 
 def lister_les_parties(iduls):
-    """Récupérer les identifiants de vos parties les plus récentes.
+        
+    rep = httpx.get(URL+'parties', params={'iduls': iduls})
 
-    Récupère les parties en effectuant une requête à l'URL cible
-    squadro/api2/parties/
+    if rep.status_code == 200:
+        return(rep.json())
 
-    Cette requête de type GET s'attend en entrée à recevoir un seul paramètre,
-    sous forme de liste, nommé `iduls` qui identifie le ou les idul(s) des joueurs.
-    En cas de succès (code `200`), elle retourne en JSON
-    un dictionnaire contenant la clé suivante:
+    elif rep.status_code == 406:
+        raise RuntimeError(rep.json())
 
-        parties: une liste des (max) 20 parties les plus récentes de l'usager;
-
-    où chaque partie dans la liste est elle-même un dictionnaire
-    contenant les clés suivantes:
-
-        id: l'identifiant de la partie;
-        date: la date de création de la partie;
-        joueurs: la liste ordonnée des joueurs;
-        gagnant: le nom du gagnant si existant (défaut: None).
-
-    En cas d'erreur, si le code de votre réponse est 406,
-    elle retourne en JSON un dictionnaire contenant la clé suivante:
-
-        message: un message en cas d'erreur;
-
-    Args:
-        iduls (list): Liste des identifiant des joueurs.
-
-    Returns:
-        list: Liste des parties reçues du serveur,
-             après avoir décodé le JSON de sa réponse.
-
-    Raises:
-        RuntimeError: Erreur levée lorsqu'il y a présence d'un message
-            dans la réponse du serveur.
-
-    Examples:
-        >>> iduls = ["josmi42"]
-        >>> parties = lister_les_parties(iduls)
-        >>> print(parties)
-        [{ 'id': 'c1493454-1f7f-446f-9c61-bd7a9d66c92d', 'date': '2021-01-23 19:23:59', ... ]
-    """
-    # TODO: Complétez cette fonction, retirer le TODO une fois complété.
-    pass
+    else:
+        return(rep.json())
+    
 
 
 def récupérer_une_partie(id_partie):
